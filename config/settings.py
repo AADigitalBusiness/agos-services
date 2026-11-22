@@ -182,5 +182,7 @@ SHOPIFY_SCOPES = os.getenv(
 
 # MCP Gateway Configuration
 MCP_SERVER_NAME = os.getenv("MCP_SERVER_NAME", "hi-bel-shopify-mcp")
+# Standalone deployment preserves Shopify, but library consumers must opt in.
+AGOS_ENABLE_SHOPIFY_TOOLS = os.getenv("AGOS_ENABLE_SHOPIFY_TOOLS", "true").lower() in ("true", "1", "yes")
 MCP_SERVER_VERSION = os.getenv("MCP_SERVER_VERSION", "0.1.0")
 MCP_AUTH_REQUIRED = os.getenv("MCP_AUTH_REQUIRED", "True").lower() in ("true", "1", "t", "yes")

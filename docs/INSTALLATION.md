@@ -50,6 +50,14 @@ This serves SSE at `/mcp/sse` and messages at `/mcp/messages/`; they are not und
 ## Limitations
 
 - **Namespaced modules:** Django application modules now live in `agos_services.apps.*`. Historical Django app labels (`channels`, `apps_auth`, `mcp_server`, `shopify_api`) are preserved to avoid resetting migrations and content types. Update existing host imports and `INSTALLED_APPS` together with the package revision.
-- **Shopify is still coupled to the MCP tools.** It is not an independently optional provider yet.
+- **Shopify MCP tools are optional at registration time**, but Shopify still ships with the distribution.
 - **Verification:** Successful runtime integration with third-party hosts and production deployment is not yet established. Validate the wheel and run CI before release.
 - Never disable MCP authentication in production. Review token handling and client authorization before exposing the SSE endpoint.
+
+## Embedding without Shopify
+
+A host Django project may register only `agos_services.apps.channels.apps.ChannelsConfig` and `agos_services.apps.mcp_server.apps.McpServerConfig` for a generic MCP gateway. Configure `AGOS_ENABLE_SHOPIFY_TOOLS = False` (the default when this setting is absent) to avoid importing or registering Shopify tool handlers during MCP server startup. In the standalone project `config.settings`, Shopify tools remain enabled by default for backward compatibility. Shopify-specific routes and dependencies should not be mounted or configured when unused.
+
+## Authentication safety
+
+`MCP_AUTH_REQUIRED` must remain enabled; the development bypass is removed. Send credentials using `Authorization: Bearer ...` or `x-mcp-client-token`, not query-string parameters. The legacy UUID token remains stored directly in the database; token hashing, rotation, resource-scoped GitHub authorization require follow-up migrations before production rollout as a general-purpose security service.
