@@ -19,7 +19,9 @@ Install AGOS in a Django host. The host must opt into discovery; adding a Python
 1. In `your_app/services/__init__.py` create an explicit registration entrypoint:
 
    ```python
-   async def ping(*, client_token=None):
+   from mcp.server.mcpserver.context import Context
+
+   async def ping(*, ctx: Context = None):
        return "pong"
 
    def register_services(registry):
@@ -43,7 +45,7 @@ Install AGOS in a Django host. The host must opt into discovery; adding a Python
 
 ## Result
 
-The service is registered at MCP server creation only when discovery is enabled. Its handler receives the caller token and the wrapper authenticates and authorizes each invocation. Duplicate names, invalid identifiers and synchronous handlers raise errors rather than silently registering.
+The service is registered at MCP server creation only when discovery is enabled. The MCP SDK injects the per-request `Context`. AGOS resolves the active client from the verified HTTP principal and authorizes each invocation. The service must not request or accept `client_token` as a tool argument. Duplicate names, invalid identifiers and synchronous handlers raise errors rather than silently registering.
 
 ## Next
 
