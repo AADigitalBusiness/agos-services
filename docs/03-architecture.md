@@ -28,7 +28,7 @@ The host can disable Shopify registration with `AGOS_ENABLE_SHOPIFY_TOOLS=False`
 
 ## Current limitations
 
-The current SSE transport authenticates the connection and each tool receives a `client_token` parameter. Token ownership across SSE message/session boundaries needs a separate review before deploying it as a multi-tenant network service. The permission model stores UUID tokens directly, and the code does not demonstrate a complete rate-limit enforcement gate. Do not infer protections from old marketing documentation.
+The SSE transport authenticates GET and POST, binds the verified principal to its session, and tools resolve the active client from the injected SDK request context. Tool arguments cannot select a different identity. The SDK's SSE sessions are in-process, so deployments with multiple workers require session affinity. The permission model still stores UUID tokens directly and the code does not demonstrate a complete rate-limit enforcement gate. Review the [operational security notes](08-operations.md) before deploying publicly.
 
 ## Next
 
