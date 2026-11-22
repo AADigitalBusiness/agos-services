@@ -62,6 +62,6 @@ async def test_shopify_tool_schema_never_exposes_client_token():
     tools = await server.list_tools()
     assert tools
     for tool in tools:
-        schema = tool.inputSchema
+        schema = tool.input_schema
         assert "client_token" not in schema.get("properties", {})
         assert "ctx" not in schema.get("properties", {})
