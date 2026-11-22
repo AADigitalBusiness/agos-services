@@ -41,6 +41,10 @@ jobs:
               "agos_services/apps/channels/models.py",
               "agos_services/apps/channels/migrations/0001_initial.py",
               "agos_services/apps/auth/migrations/0001_initial.py",
+              "agos_services/apps/channels/migrations/0002_namespaced_shopify_tools.py",
+              "agos_services/apps/mcp_server/docs/01-overview.md",
+              "agos_services/apps/mcp_server/docs/07-decisions/0001-service-namespaces.md",
+              "agos_services/apps/channels/docs/01-overview.md",
           ):
               assert name in names, f"Missing in wheel: {name}"
           PY
