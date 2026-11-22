@@ -31,7 +31,7 @@ def create_mcp_server() -> MCPServer:
             handle_create_draft_order,
         )
         @server.tool(
-            name="get_products",
+            name="shopify.products.list",
             description="Query Shopify products catalog with optional search filter and pagination limit.",
         )
         async def get_products(limit: int = 10, query: Optional[str] = None, client_token: Optional[str] = None) -> str:
@@ -40,7 +40,7 @@ def create_mcp_server() -> MCPServer:
             return json.dumps(result, indent=2)
     
         @server.tool(
-            name="get_product_by_id",
+            name="shopify.products.get",
             description="Retrieve detailed product information, including variants and prices, by Shopify product ID.",
         )
         async def get_product_by_id(product_id: str, client_token: Optional[str] = None) -> str:
@@ -49,7 +49,7 @@ def create_mcp_server() -> MCPServer:
             return json.dumps(result, indent=2)
     
         @server.tool(
-            name="search_inventory",
+            name="shopify.inventory.search",
             description="Search inventory levels across locations by SKU or inventory item ID.",
         )
         async def search_inventory(sku: Optional[str] = None, location_id: Optional[str] = None, limit: int = 20, client_token: Optional[str] = None) -> str:
@@ -58,7 +58,7 @@ def create_mcp_server() -> MCPServer:
             return json.dumps(result, indent=2)
     
         @server.tool(
-            name="get_orders",
+            name="shopify.orders.list",
             description="List customer orders filtered by status (open, closed, any) and pagination limit.",
         )
         async def get_orders(limit: int = 10, status: Optional[str] = "open", client_token: Optional[str] = None) -> str:
@@ -67,7 +67,7 @@ def create_mcp_server() -> MCPServer:
             return json.dumps(result, indent=2)
     
         @server.tool(
-            name="get_order_by_id",
+            name="shopify.orders.get",
             description="Retrieve complete order details by Shopify order ID.",
         )
         async def get_order_by_id(order_id: str, client_token: Optional[str] = None) -> str:
@@ -76,7 +76,7 @@ def create_mcp_server() -> MCPServer:
             return json.dumps(result, indent=2)
     
         @server.tool(
-            name="create_draft_order",
+            name="shopify.draft_orders.create",
             description="Create a draft order in Shopify with specified line items, optional customer ID, and notes.",
         )
         async def create_draft_order(
