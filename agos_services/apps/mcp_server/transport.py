@@ -46,6 +46,12 @@ async def messages_endpoint(request: Request):
     """
     Message endpoint for SSE transport messages (JSON-RPC requests from client).
     """
+    token = request.headers.get("authorization") or request.headers.get("x-mcp-client-token")
+    try:
+        await PrivilegeGate.authenticate_token(token)
+    except AuthenticationRequiredError:
+        return JSONResponse({"error": "Unauthorized"}, status_code=401)
+
     return await sse_transport.handle_post_message(
         request.scope, request.receive, request._send
     )
