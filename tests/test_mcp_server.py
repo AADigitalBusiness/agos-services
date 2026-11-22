@@ -29,10 +29,10 @@ class TestMCPServerPrivilegeGate:
 
     async def test_permission_denied_for_unauthorized_tool(self, active_mcp_client):
         with pytest.raises(PermissionDeniedError):
-            await PrivilegeGate.verify_tool_permission(active_mcp_client, "create_draft_order")
+            await PrivilegeGate.verify_tool_permission(active_mcp_client, "shopify.draft_orders.create")
 
     async def test_permission_granted_for_authorized_tool(self, active_mcp_client):
-        allowed = await PrivilegeGate.verify_tool_permission(active_mcp_client, "get_products")
+        allowed = await PrivilegeGate.verify_tool_permission(active_mcp_client, "shopify.products.list")
         assert allowed is True
 
     async def test_handle_create_draft_order_enforces_gate(self, active_mcp_client):
