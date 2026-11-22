@@ -32,3 +32,37 @@ class TestShopifyAuth:
 
         invalid_params = dict(query, hmac="wrong_signature")
         assert ShopifyAuthService.verify_hmac(invalid_params) is False
+
+    def test_missing_hmac_secret_is_denied(self, settings):
+        settings.SHOPIFY_API_SECRET = ""
+        assert ShopifyAuthService.verify_hmac({
+            "shop": "demo.myshopify.com",
+            "timestamp": "123456",
+            "hmac": "arbitrary",
+        }) is False
+
+    @pytest.mark.asyncio
+    async def test_callback_rejects_invalid_state_before_token_exchange(self, settings):
+        import hashlib
+        import hmac
+        from django.test import RequestFactory
+        from agos_services.apps.auth.views import ShopifyCallbackView
+
+        settings.SHOPIFY_API_SECRET = "secret_key"
+        params = {
+            "shop": "demo.myshopify.com",
+            "code": "fake-code",
+            "state": "unexpected-state",
+        }
+        signed = "&".join(f"{key}={value}" for key, value in sorted(params.items()))
+        params["hmac"] = hmac.new(
+            b"secret_key", signed.encode(), hashlib.sha256
+        ).hexdigest()
+
+        request = RequestFactory().get("/api/auth/shopify/callback/", data=params)
+        request.session = {"shopify_oauth_state": "expected-state"}
+        response = await ShopifyCallbackView.as_view()(request)
+
+        assert response.status_code == 400
+        assert b"Invalid Shopify OAuth state" in response.content
+        assert "shopify_oauth_state" not in request.session

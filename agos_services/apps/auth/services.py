@@ -7,8 +7,9 @@ import httpx
 class ShopifyAuthService:
     @staticmethod
     def verify_hmac(query_params: dict) -> bool:
-        if not settings.SHOPIFY_API_SECRET:
-            return True
+        if not getattr(settings, "SHOPIFY_API_SECRET", None):
+            # Missing credentials must never disable callback verification.
+            return False
         params = query_params.copy()
         signature = params.pop("hmac", None)
         if isinstance(signature, list):
