@@ -5,12 +5,32 @@ from starlette.routing import Route
 from starlette.responses import JSONResponse, Response
 from starlette.requests import Request
 from mcp.server.sse import SseServerTransport
+from mcp.server.auth.middleware.bearer_auth import AuthenticatedUser
+from mcp.server.auth.provider import AccessToken
 from agos_services.apps.mcp_server.server import mcp_server_instance
 from agos_services.apps.mcp_server.middleware import PrivilegeGate, AuthenticationRequiredError, PermissionDeniedError
 
 logger = logging.getLogger(__name__)
 
 sse_transport = SseServerTransport("/mcp/messages/")
+
+
+def bind_session_principal(scope, client):
+    """Give the MCP SDK a verified principal, never an untrusted token string.
+
+    The SDK records scope["user"] when SSE starts and compares the same
+    principal for every message POST's session_id.
+    """
+    principal = AuthenticatedUser(
+        AccessToken(
+            token="",
+            client_id=str(client.pk),
+            scopes=[],
+        )
+    )
+    scope["user"] = principal
+    return principal
+
 
 async def sse_endpoint(request: Request):
     """
@@ -29,6 +49,7 @@ async def sse_endpoint(request: Request):
             status_code=401,
         )
 
+    bind_session_principal(request.scope, client)
     logger.info("MCP client connected via SSE: client_id=%s", client.pk)
 
     async with sse_transport.connect_sse(
@@ -48,10 +69,11 @@ async def messages_endpoint(request: Request):
     """
     token = request.headers.get("authorization") or request.headers.get("x-mcp-client-token")
     try:
-        await PrivilegeGate.authenticate_token(token)
+        client = await PrivilegeGate.authenticate_token(token)
     except AuthenticationRequiredError:
         return JSONResponse({"error": "Unauthorized"}, status_code=401)
 
+    bind_session_principal(request.scope, client)
     return await sse_transport.handle_post_message(
         request.scope, request.receive, request._send
     )
