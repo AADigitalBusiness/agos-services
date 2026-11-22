@@ -40,9 +40,11 @@ Use a local clone, a Python 3.11/3.12 environment and the host project's configu
 
 ## MCP transport security status
 
-Both `GET /mcp/sse` and `POST /mcp/messages/` now require an authenticated client token. This is **request authentication only**, not proof that a POST belongs to the client which created the SSE session. The current SSE SDK transport retains shared message routing state, so the host must not expose a multi-tenant shared MCP endpoint as production-ready until session-to-client binding and cross-client message isolation have been implemented and tested. Restrict deployments to trusted environments in the meantime. A token passed as a tool argument does not establish channel identity.
+Both `GET /mcp/sse` and `POST /mcp/messages/` require an authenticated client token. AGOS assigns the verified `MCPClient.pk` to the MCP SDK's `AuthenticatedUser` in the ASGI scope for **both** requests. On SSE creation, the SDK records the principal as the session owner; on POST, its session guard compares the principal before delivering a message. Requests from another authenticated client receive the same 404 as an unknown session.
 
-CI creates an isolated virtualenv, installs the *built wheel* into a separate Django host, applies migrations and verifies the ASGI mount and permission records; this test does not certify remote session isolation.
+The SDK maintains an in-memory session map. Sessions therefore require sticky routing to the same process in a multi-worker deployment; cross-replica session sharing is not supported. Tool parameters still accept a caller-provided `client_token`: a subsequent hardening change must derive authorization directly from the verified request principal, instead of allowing independent credential selection in tool arguments. Do not deploy an unreviewed multi-tenant MCP gateway publicly.
+
+CI checks session ownership against the installed MCP SDK and installs a built wheel into an independent Django host. Passing automated checks does not substitute for penetration testing or production security review.
 
 ## Documentation workflow
 

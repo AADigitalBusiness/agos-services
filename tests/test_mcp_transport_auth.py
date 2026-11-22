@@ -68,10 +68,12 @@ async def test_valid_bearer_reaches_transport(monkeypatch):
 
     calls = []
 
+    from types import SimpleNamespace
+
     async def authenticate(token):
         assert token == "Bearer test-token"
         calls.append("authorized")
-        return object()
+        return SimpleNamespace(pk="8c7100f5-c997-4f49-93f6-1490616d5c82")
 
     async def transport(*args):
         calls.append("transport")
@@ -84,3 +86,4 @@ async def test_valid_bearer_reaches_transport(monkeypatch):
     response = await messages_endpoint(request)
     assert response.status_code == 202
     assert calls == ["authorized", "transport"]
+    assert request.scope["user"].access_token.client_id == "8c7100f5-c997-4f49-93f6-1490616d5c82"
