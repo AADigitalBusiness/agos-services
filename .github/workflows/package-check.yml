@@ -63,7 +63,7 @@ jobs:
 
           from django.conf import settings
 
-          assert not any(Path(part).resolve() == Path(os.getcwd()).resolve() for part in sys.path if part)
+          assert not any(Path(part).resolve() == Path(os.environ["GITHUB_WORKSPACE"]).resolve() for part in sys.path if part)
           settings.configure(
               SECRET_KEY="host-smoke-test-only",
               DEBUG=False,
