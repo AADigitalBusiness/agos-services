@@ -48,18 +48,21 @@ class ServiceRegistry:
     def publish(self, server):
         """Register checked tools; every invocation authenticates and authorizes."""
         for definition in self.definitions:
-            handler = definition.handler
+            def make_guarded(item):
+                @wraps(item.handler)
+                async def guarded(*args, **kwargs):
+                    # Bind against the public signature, including positional tokens.
+                    bound = signature(item.handler).bind(*args, **kwargs)
+                    token = bound.arguments.get("client_token")
+                    client = await PrivilegeGate.authenticate_token(token)
+                    await PrivilegeGate.verify_tool_permission(client, item.name)
+                    return await item.handler(*args, **kwargs)
 
-            @wraps(handler)
-            async def guarded(*args, __definition=definition, **kwargs):
-                # Bind against the public signature so positional tokens are also checked.
-                bound = signature(__definition.handler).bind(*args, **kwargs)
-                token = bound.arguments.get("client_token")
-                client = await PrivilegeGate.authenticate_token(token)
-                await PrivilegeGate.verify_tool_permission(client, __definition.name)
-                return await __definition.handler(*args, **kwargs)
+                return guarded
 
-            server.tool(name=definition.name, description=definition.description)(guarded)
+            server.tool(name=definition.name, description=definition.description)(
+                make_guarded(definition)
+            )
 
 
 def discover_services(*, installed_apps=None):
