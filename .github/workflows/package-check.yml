@@ -48,3 +48,58 @@ jobs:
           ):
               assert name in names, f"Missing in wheel: {name}"
           PY
+
+      - name: Verify installation in independent Django host
+        run: |
+          python -m venv "$RUNNER_TEMP/agos-host"
+          "$RUNNER_TEMP/agos-host/bin/python" -m pip install --upgrade pip
+          "$RUNNER_TEMP/agos-host/bin/python" -m pip install dist/*.whl
+          mkdir -p "$RUNNER_TEMP/host-app"
+          cat > "$RUNNER_TEMP/host-app/test_host.py" <<'PY'
+          import os
+          import sys
+          import tempfile
+          from pathlib import Path
+
+          from django.conf import settings
+
+          assert not any(Path(part).resolve() == Path(os.getcwd()).resolve() for part in sys.path if part)
+          settings.configure(
+              SECRET_KEY="host-smoke-test-only",
+              DEBUG=False,
+              ALLOWED_HOSTS=["localhost"],
+              INSTALLED_APPS=[
+                  "django.contrib.auth",
+                  "django.contrib.contenttypes",
+                  "agos_services.apps.channels.apps.ChannelsConfig",
+                  "agos_services.apps.mcp_server.apps.McpServerConfig",
+              ],
+              DATABASES={"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}},
+              MIDDLEWARE=[],
+              ROOT_URLCONF="host_urls",
+              MCP_AUTH_REQUIRED=True,
+              AGOS_ENABLE_SHOPIFY_TOOLS=False,
+              AGOS_ENABLE_SERVICE_DISCOVERY=False,
+          )
+          import django
+          django.setup()
+          from django.core.management import call_command
+          from django.core.asgi import get_asgi_application
+          from agos_services.asgi import mount_mcp
+          from agos_services.apps.channels.models import MCPClient, ToolPermission
+
+          call_command("check", verbosity=0)
+          call_command("migrate", verbosity=0)
+          client = MCPClient.objects.create(name="host smoke client")
+          assert client.has_permission_for_tool("example.health.ping") is False
+          ToolPermission.objects.create(
+              client=client, tool_name="example.health.ping", allowed=True
+          )
+          assert client.has_permission_for_tool("example.health.ping")
+          assert mount_mcp(get_asgi_application()) is not None
+          print("Independent host installation, migration, and ASGI mount passed")
+          PY
+          cat > "$RUNNER_TEMP/host-app/host_urls.py" <<'PY'
+          urlpatterns = []
+          PY
+          ( cd "$RUNNER_TEMP/host-app" && "$RUNNER_TEMP/agos-host/bin/python" test_host.py )
