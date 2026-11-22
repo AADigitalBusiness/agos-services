@@ -1,5 +1,8 @@
 # hi-bel: Governed Shopify MCP Integration Gateway
 
+> **Installable Django package (initial implementation):** Install directly from Git with `pip install "git+https://github.com/AADigitalBusiness/agos-services.git@feature/django-installable-package"`. Register the existing `apps.*` Django applications in your host project and optionally mount `agos_services.urls` and `agos_services.asgi.mount_mcp`. See [installation instructions](docs/INSTALLATION.md). This is not yet a PyPI release; the generic `apps` namespace and Shopify coupling remain known limitations.
+
+
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Django 5.1](https://img.shields.io/badge/django-5.1-green.svg)](https://www.djangoproject.com/)
 [![MCP 2.x](https://img.shields.io/badge/MCP-Protocol-purple.svg)](https://modelcontextprotocol.io/)
