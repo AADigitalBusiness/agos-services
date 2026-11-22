@@ -22,7 +22,7 @@ def create_mcp_server() -> MCPServer:
     )
 
     if getattr(settings, "AGOS_ENABLE_SHOPIFY_TOOLS", False):
-    from apps.mcp_server.tools import (
+        from apps.mcp_server.tools import (
         handle_get_products,
         handle_get_product_by_id,
         handle_search_inventory,
