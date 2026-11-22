@@ -11,10 +11,10 @@ def active_mcp_client(db):
         rate_limit_rpm=120,
     )
     # Grant permissions for products
-    ToolPermission.objects.create(client=client, tool_name="get_products", allowed=True)
-    ToolPermission.objects.create(client=client, tool_name="get_product_by_id", allowed=True)
+    ToolPermission.objects.create(client=client, tool_name="shopify.products.list", allowed=True)
+    ToolPermission.objects.create(client=client, tool_name="shopify.products.get", allowed=True)
     # Explicitly deny / ungranted for create_draft_order
-    ToolPermission.objects.create(client=client, tool_name="create_draft_order", allowed=False)
+    ToolPermission.objects.create(client=client, tool_name="shopify.draft_orders.create", allowed=False)
     return client
 
 @pytest.fixture

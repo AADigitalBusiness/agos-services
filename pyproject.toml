@@ -40,3 +40,9 @@ test = ["pytest>=8.0.0", "pytest-django>=4.8.0", "pytest-asyncio>=0.23.0", "resp
 where = ["."]
 include = ["agos_services*"]
 namespaces = true
+
+[tool.setuptools.package-data]
+"agos_services.apps.channels" = ["docs/**/*", "docs/*"]
+"agos_services.apps.mcp_server" = ["docs/**/*", "docs/*"]
+"agos_services.apps.shopify_api" = ["docs/**/*", "docs/*"]
+"agos_services.apps.auth" = ["docs/**/*", "docs/*"]
