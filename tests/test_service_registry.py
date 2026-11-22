@@ -95,3 +95,43 @@ async def test_published_service_requires_exact_permission(monkeypatch):
     with pytest.raises(ValueError, match="invalid token"):
         await server.tools["example.health.ping"](client_token="invalid")
     assert "handler" not in events
+
+
+@pytest.mark.asyncio
+async def test_each_registered_tool_keeps_its_own_permission(monkeypatch):
+    registry = ServiceRegistry()
+    seen = []
+
+    async def alpha(*, client_token=None):
+        return "a"
+
+    async def beta(*, client_token=None):
+        return "b"
+
+    registry.register(name="sample.alpha.run", handler=alpha, description="Alpha")
+    registry.register(name="sample.beta.run", handler=beta, description="Beta")
+
+    class FakeServer:
+        def __init__(self):
+            self.tools = {}
+
+        def tool(self, *, name, description):
+            def register(handler):
+                self.tools[name] = handler
+                return handler
+            return register
+
+    async def auth(token):
+        return "client"
+
+    async def permission(client, name):
+        seen.append(name)
+
+    monkeypatch.setattr(PrivilegeGate, "authenticate_token", auth)
+    monkeypatch.setattr(PrivilegeGate, "verify_tool_permission", permission)
+
+    server = FakeServer()
+    registry.publish(server)
+    assert await server.tools["sample.alpha.run"](client_token="x") == "a"
+    assert await server.tools["sample.beta.run"](client_token="x") == "b"
+    assert seen == ["sample.alpha.run", "sample.beta.run"]
