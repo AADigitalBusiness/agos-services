@@ -3,7 +3,7 @@ import logging
 from typing import Optional, Tuple
 from asgiref.sync import sync_to_async
 from django.conf import settings
-from apps.channels.models import MCPClient, ToolPermission
+from agos_services.apps.channels.models import MCPClient, ToolPermission
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ class PrivilegeGate:
             raise AuthenticationRequiredError("MCP authentication cannot be disabled.")
 
         if not token_str:
-            raise AuthenticationRequiredError("Missing client authorization token. Provide 'Authorization: Bearer <TOKEN>' or '?token=<TOKEN>'.")
+            raise AuthenticationRequiredError("Missing client authorization token. Provide 'Authorization: Bearer <TOKEN>' or x-mcp-client-token header.")
 
         # Clean token
         if token_str.lower().startswith("bearer "):

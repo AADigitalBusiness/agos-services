@@ -1,6 +1,6 @@
 import asyncio
 from django.core.management.base import BaseCommand
-from apps.mcp_server.server import mcp_server_instance
+from agos_services.apps.mcp_server.server import mcp_server_instance
 
 class Command(BaseCommand):
     help = "Run the hi-bel Model Context Protocol (MCP) server"

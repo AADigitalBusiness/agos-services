@@ -6,14 +6,14 @@ from importlib.util import find_spec
 def test_django_modules_and_migrations_are_importable():
     """The installed package must expose the existing apps and migrations."""
     modules = (
-        "apps.channels",
-        "apps.auth",
-        "apps.mcp_server",
-        "apps.shopify_api",
-        "apps.channels.migrations",
-        "apps.channels.migrations.0001_initial",
-        "apps.auth.migrations",
-        "apps.auth.migrations.0001_initial",
+        "agos_services.apps.channels",
+        "agos_services.apps.auth",
+        "agos_services.apps.mcp_server",
+        "agos_services.apps.shopify_api",
+        "agos_services.apps.channels.migrations",
+        "agos_services.apps.channels.migrations.0001_initial",
+        "agos_services.apps.auth.migrations",
+        "agos_services.apps.auth.migrations.0001_initial",
         "agos_services",
     )
     for name in modules:

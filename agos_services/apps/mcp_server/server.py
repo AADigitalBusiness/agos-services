@@ -2,7 +2,7 @@ import json
 import logging
 from typing import Optional, Dict, Any, List
 from mcp.server.mcpserver import MCPServer
-from apps.mcp_server.middleware import PrivilegeGate, PermissionDeniedError, AuthenticationRequiredError
+from agos_services.apps.mcp_server.middleware import PrivilegeGate, PermissionDeniedError, AuthenticationRequiredError
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
@@ -22,14 +22,14 @@ def create_mcp_server() -> MCPServer:
     )
 
     if getattr(settings, "AGOS_ENABLE_SHOPIFY_TOOLS", False):
-        from apps.mcp_server.tools import (
-        handle_get_products,
-        handle_get_product_by_id,
-        handle_search_inventory,
-        handle_get_orders,
-        handle_get_order_by_id,
-        handle_create_draft_order,
-    )
+        from agos_services.apps.mcp_server.tools import (
+            handle_get_products,
+            handle_get_product_by_id,
+            handle_search_inventory,
+            handle_get_orders,
+            handle_get_order_by_id,
+            handle_create_draft_order,
+        )
         @server.tool(
             name="get_products",
             description="Query Shopify products catalog with optional search filter and pagination limit.",

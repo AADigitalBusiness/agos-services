@@ -1,8 +1,8 @@
 """Regression tests for generic MCP hosting and authentication safety."""
 import pytest
 from django.test import override_settings
-from apps.mcp_server.middleware import PrivilegeGate, AuthenticationRequiredError
-from apps.mcp_server.server import create_mcp_server
+from agos_services.apps.mcp_server.middleware import PrivilegeGate, AuthenticationRequiredError
+from agos_services.apps.mcp_server.server import create_mcp_server
 
 
 @pytest.mark.asyncio

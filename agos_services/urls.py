@@ -2,7 +2,7 @@
 from django.urls import include, path
 
 urlpatterns = [
-    path("channels/", include("apps.channels.urls")),
-    path("auth/shopify/", include("apps.auth.urls")),
-    path("mcp/", include("apps.mcp_server.urls")),
+    path("channels/", include("agos_services.apps.channels.urls")),
+    path("auth/shopify/", include("agos_services.apps.auth.urls")),
+    path("mcp/", include("agos_services.apps.mcp_server.urls")),
 ]

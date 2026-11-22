@@ -1,6 +1,6 @@
 import pytest
-from apps.auth.models import ShopifyStoreSession
-from apps.auth.services import ShopifyAuthService
+from agos_services.apps.auth.models import ShopifyStoreSession
+from agos_services.apps.auth.services import ShopifyAuthService
 
 @pytest.mark.django_db
 class TestShopifyAuth:

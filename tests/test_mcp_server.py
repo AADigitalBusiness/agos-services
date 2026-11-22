@@ -1,7 +1,7 @@
 import pytest
 import uuid
-from apps.mcp_server.middleware import PrivilegeGate, AuthenticationRequiredError, PermissionDeniedError
-from apps.mcp_server.tools import handle_get_products, handle_create_draft_order
+from agos_services.apps.mcp_server.middleware import PrivilegeGate, AuthenticationRequiredError, PermissionDeniedError
+from agos_services.apps.mcp_server.tools import handle_get_products, handle_create_draft_order
 
 @pytest.mark.django_db(transaction=True)
 @pytest.mark.asyncio

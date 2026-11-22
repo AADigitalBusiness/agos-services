@@ -27,10 +27,10 @@ INSTALLED_APPS = [
     "oauth2_provider",
     "corsheaders",
     # Local apps
-    "apps.channels.apps.ChannelsConfig",
-    "apps.mcp_server.apps.McpServerConfig",
-    "apps.shopify_api.apps.ShopifyApiConfig",
-    "apps.auth.apps.AuthConfig",
+    "agos_services.apps.channels.apps.ChannelsConfig",
+    "agos_services.apps.mcp_server.apps.McpServerConfig",
+    "agos_services.apps.shopify_api.apps.ShopifyApiConfig",
+    "agos_services.apps.auth.apps.AuthConfig",
 ]
 
 MIDDLEWARE = [
