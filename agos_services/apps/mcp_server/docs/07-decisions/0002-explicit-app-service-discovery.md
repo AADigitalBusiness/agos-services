@@ -9,7 +9,7 @@ flowchart LR
     R --> G["Permission gate"]
 ```
 
-**Status:** Proposed · not implemented
+**Status:** Proposed · opt-in implementation available for validation
 
 ## Context
 
@@ -25,8 +25,8 @@ A monolithic tool catalog prevents extension. Scanning and publishing arbitrary 
 
 ## Consequences
 
-Requires a service registry API, collision handling, registration lifecycle tests and authorization integration. The current code still registers Shopify tools explicitly in `mcp_server/server.py`.
+Requires a service registry API, collision handling, registration lifecycle tests and authorization integration. The current code still registers Shopify tools explicitly in `mcp_server/server.py`, while third-party apps may opt in via `AGOS_ENABLE_SERVICE_DISCOVERY=True` and `services.register_services(registry)`. Discovery is not approval to execute: `ToolPermission` is required for each invocation.
 
 ## Next
 
-Follow [MCP overview](../01-overview.md) and implement this only with tests and an explicit approval for its runtime contract.
+Follow the [application service guide](../05-guides/register-a-service.md) and validate the opt-in lifecycle before considering this contract stable.

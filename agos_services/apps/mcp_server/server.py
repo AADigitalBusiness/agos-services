@@ -94,6 +94,12 @@ def create_mcp_server() -> MCPServer:
             )
             return json.dumps(result, indent=2)
 
+    # External app services are opt-in; discovering a module never grants permissions.
+    if getattr(settings, "AGOS_ENABLE_SERVICE_DISCOVERY", False):
+        from agos_services.service_registry import discover_services
+        registry = discover_services()
+        registry.publish(server)
+
     return server
 
 mcp_server_instance = create_mcp_server()
