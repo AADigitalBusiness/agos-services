@@ -1,0 +1,47 @@
+# Operations
+
+Run, test and review the AGOS gateway safely.
+
+```mermaid
+flowchart LR
+    C["Configure"] --> D["Migrate"]
+    D --> T["Test"]
+    T --> R["Review security"]
+    R --> P["Deploy"]
+```
+
+## Before you start
+
+Use a local clone, a Python 3.11/3.12 environment and the host project's configured database. Never commit production secrets.
+
+## Steps
+
+1. Install dependencies and tests.
+
+   ```bash
+   python -m pip install -e ".[test]"
+   ```
+
+2. Verify Django, database migrations and packaging.
+
+   ```bash
+   python manage.py check
+   python manage.py migrate
+   python -m pytest
+   python -m pip install build
+   python -m build
+   ```
+
+3. Review environment and access policy before deployment: non-default `SECRET_KEY`, restrictive `ALLOWED_HOSTS`, HTTPS, secure Shopify secrets and no public admin provisioning endpoint. Keep `MCP_AUTH_REQUIRED=True`.
+
+4. After changing tool identifiers, run `migrate` before serving new tool names. Verify old grants map correctly and deny-by-default still applies.
+
+5. Review CI on both supported Python versions; do not merge while package tests or security review are failing.
+
+## Documentation workflow
+
+Use the [AAD-docs authoring standard](https://github.com/AADigitalBusiness/AAD-docs/blob/main/docs/HOW-DOCS-WORK.md): root docs only for cross-app information, application-specific pages in each app's `docs/`, one owner for each fact, English defaults and Mermaid diagrams. Because this gateway currently pins Django below 5.2, do not install the `aad_docs` renderer until dependency compatibility is resolved. The Markdown structure remains portable to it.
+
+## Next
+
+Use [Documentation map](00-map.md) to locate an application's guide.
