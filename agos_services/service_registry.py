@@ -3,6 +3,9 @@ from dataclasses import dataclass
 from functools import wraps
 from inspect import iscoroutinefunction, signature
 from importlib import import_module
+from typing import get_type_hints
+from mcp.server.mcpserver.context import Context
+from agos_services.apps.mcp_server.identity import client_from_context
 import re
 
 from django.apps import apps
@@ -35,8 +38,10 @@ class ServiceRegistry:
         if not iscoroutinefunction(handler):
             raise TypeError(f"Service {name} must have an async handler")
         params = signature(handler).parameters
-        if "client_token" not in params:
-            raise TypeError(f"Service {name} must declare client_token")
+        if "client_token" in params:
+            raise TypeError(f"Service {name} must not expose client_token")
+        if "ctx" not in params or get_type_hints(handler).get("ctx") is not Context:
+            raise TypeError(f"Service {name} must declare ctx: Context")
         if not isinstance(description, str) or not description.strip():
             raise ValueError(f"Service {name} needs a description")
         self._definitions[name] = ServiceDefinition(name, handler, description, source)
@@ -51,10 +56,9 @@ class ServiceRegistry:
             def make_guarded(item):
                 @wraps(item.handler)
                 async def guarded(*args, **kwargs):
-                    # Bind against the public signature, including positional tokens.
+                    # The SDK injects ctx; never trust a caller-selected client token.
                     bound = signature(item.handler).bind(*args, **kwargs)
-                    token = bound.arguments.get("client_token")
-                    client = await PrivilegeGate.authenticate_token(token)
+                    client = await client_from_context(bound.arguments.get("ctx"))
                     await PrivilegeGate.verify_tool_permission(client, item.name)
                     return await item.handler(*args, **kwargs)
 
