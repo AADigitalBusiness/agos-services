@@ -20,6 +20,8 @@ jobs:
           python -m pip install -e ".[test]" build
       - name: Django system check
         run: python manage.py check
+      - name: Verify migration state
+        run: python manage.py makemigrations --check --dry-run
       - name: Test suite
         run: python -m pytest
       - name: Build wheel and sdist
