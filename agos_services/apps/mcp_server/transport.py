@@ -5,8 +5,8 @@ from starlette.routing import Route
 from starlette.responses import JSONResponse, Response
 from starlette.requests import Request
 from mcp.server.sse import SseServerTransport
-from apps.mcp_server.server import mcp_server_instance
-from apps.mcp_server.middleware import PrivilegeGate, AuthenticationRequiredError, PermissionDeniedError
+from agos_services.apps.mcp_server.server import mcp_server_instance
+from agos_services.apps.mcp_server.middleware import PrivilegeGate, AuthenticationRequiredError, PermissionDeniedError
 
 logger = logging.getLogger(__name__)
 

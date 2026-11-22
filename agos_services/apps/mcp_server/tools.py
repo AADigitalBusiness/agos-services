@@ -1,8 +1,8 @@
 import json
 import logging
 from typing import Optional, List, Dict, Any
-from apps.shopify_api.client import ShopifyGraphQLClient
-from apps.mcp_server.middleware import PrivilegeGate, MCPClient
+from agos_services.apps.shopify_api.client import ShopifyGraphQLClient
+from agos_services.apps.mcp_server.middleware import PrivilegeGate, MCPClient
 
 logger = logging.getLogger(__name__)
 

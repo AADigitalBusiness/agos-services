@@ -2,8 +2,8 @@ import json
 import logging
 from typing import Optional, Dict, Any, List
 from mcp.server.mcpserver import MCPServer
-from apps.mcp_server.middleware import PrivilegeGate, PermissionDeniedError, AuthenticationRequiredError
-from apps.mcp_server.tools import (
+from agos_services.apps.mcp_server.middleware import PrivilegeGate, PermissionDeniedError, AuthenticationRequiredError
+from agos_services.apps.mcp_server.tools import (
     handle_get_products,
     handle_get_product_by_id,
     handle_search_inventory,

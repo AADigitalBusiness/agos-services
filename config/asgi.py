@@ -11,7 +11,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django_asgi_app = get_asgi_application()
 
 # Import MCP Starlette routes
-from apps.mcp_server.transport import get_starlette_routes
+from agos_services.apps.mcp_server.transport import get_starlette_routes
 
 routes = [
     *get_starlette_routes(),

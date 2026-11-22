@@ -40,7 +40,7 @@ class ShopifyGraphQLClient:
     async def get_client_for_store(cls, shop_url: Optional[str] = None) -> "ShopifyGraphQLClient":
         """Resolves active ShopifyStoreSession from the database or falls back to env config."""
         from asgiref.sync import sync_to_async
-        from apps.auth.models import ShopifyStoreSession
+        from agos_services.apps.auth.models import ShopifyStoreSession
 
         target_shop = shop_url or getattr(settings, "SHOPIFY_STORE_DOMAIN", "")
         if target_shop:
