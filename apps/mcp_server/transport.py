@@ -15,10 +15,10 @@ sse_transport = SseServerTransport("/mcp/messages/")
 async def sse_endpoint(request: Request):
     """
     SSE Endpoint for external MCP clients (Cursor, Claude Desktop, Antigravity).
-    Authenticates client token from Authorization header or 'token' query param.
+    Authenticates client token from Authorization or x-mcp-client-token header.
     """
     auth_header = request.headers.get("authorization")
-    token_param = request.query_params.get("token") or request.headers.get("x-mcp-client-token")
+    token_param = request.headers.get("x-mcp-client-token")
     token = auth_header or token_param
 
     try:
@@ -29,7 +29,7 @@ async def sse_endpoint(request: Request):
             status_code=401,
         )
 
-    logger.info(f"MCP client connected via SSE: {client.name} (token: {client.token})")
+    logger.info("MCP client connected via SSE: client_id=%s", client.pk)
 
     async with sse_transport.connect_sse(
         request.scope, request.receive, request._send

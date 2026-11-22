@@ -23,12 +23,7 @@ class PrivilegeGate:
     @staticmethod
     async def authenticate_token(token_str: Optional[str]) -> MCPClient:
         if not getattr(settings, "MCP_AUTH_REQUIRED", True):
-            # Development bypass only if explicitly disabled
-            client = await sync_to_async(lambda: MCPClient.objects.filter(is_active=True).first())()
-            if client:
-                return client
-            client = await sync_to_async(lambda: MCPClient.objects.create(name="Dev Client", is_active=True))()
-            return client
+            raise AuthenticationRequiredError("MCP authentication cannot be disabled.")
 
         if not token_str:
             raise AuthenticationRequiredError("Missing client authorization token. Provide 'Authorization: Bearer <TOKEN>' or '?token=<TOKEN>'.")
@@ -59,7 +54,7 @@ class PrivilegeGate:
         )()
 
         if not has_perm:
-            logger.warning(f"Access Denied: Client '{client.name}' ({client.token}) attempted to call unauthorized tool '{tool_name}'")
+            logger.warning("Access denied: client %s attempted unauthorized tool %s", client.pk, tool_name)
             raise PermissionDeniedError(
                 f"Permission Denied: Client '{client.name}' is not authorized to invoke tool '{tool_name}'."
             )
