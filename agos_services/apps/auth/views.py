@@ -1,7 +1,9 @@
 import uuid
+import hmac
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.views import View
 from django.conf import settings
+from asgiref.sync import sync_to_async
 from .models import ShopifyStoreSession
 from .services import ShopifyAuthService
 
@@ -23,19 +25,21 @@ class ShopifyCallbackView(View):
         code = params.get("code")
         state = params.get("state")
         
-        if not shop or not code:
-            return HttpResponseBadRequest("Missing 'shop' or 'code' parameters.")
+        if not shop or not code or not state:
+            return HttpResponseBadRequest("Missing Shopify OAuth callback parameters.")
         
-        # Verify HMAC
+        # Verify signature and consume the one-time session state before exchanging tokens.
         if not ShopifyAuthService.verify_hmac(params):
             return HttpResponseBadRequest("HMAC validation failed.")
+        expected_state = await sync_to_async(request.session.pop)("shopify_oauth_state", None)
+        if not expected_state or not hmac.compare_digest(str(expected_state), str(state)):
+            return HttpResponseBadRequest("Invalid Shopify OAuth state.")
         
         try:
             token_data = await ShopifyAuthService.exchange_code_for_token(shop, code)
             access_token = token_data.get("access_token")
             scopes = token_data.get("scope", "")
             
-            from asgiref.sync import sync_to_async
             session_obj, _ = await sync_to_async(ShopifyStoreSession.objects.update_or_create)(
                 shop_url=shop,
                 defaults={
