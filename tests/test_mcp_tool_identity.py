@@ -65,3 +65,28 @@ async def test_shopify_tool_schema_never_exposes_client_token():
         schema = tool.input_schema
         assert "client_token" not in schema.get("properties", {})
         assert "ctx" not in schema.get("properties", {})
+
+
+@pytest.mark.asyncio
+async def test_discovered_service_schema_uses_sdk_context_injection():
+    from mcp.server.mcpserver import MCPServer
+    from mcp.server.mcpserver.context import Context
+    from agos_services.service_registry import ServiceRegistry
+
+    async def ping(*, payload: str, ctx: Context = None):
+        return payload
+
+    registry = ServiceRegistry()
+    registry.register(
+        name="example.health.ping",
+        handler=ping,
+        description="Example health check",
+    )
+    server = MCPServer(name="test-discovery")
+    registry.publish(server)
+    tools = await server.list_tools()
+    assert len(tools) == 1
+    properties = tools[0].input_schema.get("properties", {})
+    assert "payload" in properties
+    assert "ctx" not in properties
+    assert "client_token" not in properties
