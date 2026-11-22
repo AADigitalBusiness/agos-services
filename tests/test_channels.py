@@ -1,6 +1,6 @@
 import pytest
 import uuid
-from apps.channels.models import MCPClient, ToolPermission
+from agos_services.apps.channels.models import MCPClient, ToolPermission
 
 @pytest.mark.django_db
 class TestChannelsAndPermissions:

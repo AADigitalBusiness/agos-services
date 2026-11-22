@@ -1,7 +1,7 @@
 import pytest
 import uuid
-from apps.channels.models import MCPClient, ToolPermission
-from apps.auth.models import ShopifyStoreSession
+from agos_services.apps.channels.models import MCPClient, ToolPermission
+from agos_services.apps.auth.models import ShopifyStoreSession
 
 @pytest.fixture
 def active_mcp_client(db):

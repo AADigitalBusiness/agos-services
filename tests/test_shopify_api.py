@@ -1,8 +1,8 @@
 import pytest
 import respx
 import httpx
-from apps.shopify_api.client import ShopifyGraphQLClient
-from apps.shopify_api.exceptions import ShopifyAuthenticationError, ShopifyRateLimitError, ShopifyNotFoundError
+from agos_services.apps.shopify_api.client import ShopifyGraphQLClient
+from agos_services.apps.shopify_api.exceptions import ShopifyAuthenticationError, ShopifyRateLimitError, ShopifyNotFoundError
 
 @pytest.mark.asyncio
 class TestShopifyGraphQLClient:

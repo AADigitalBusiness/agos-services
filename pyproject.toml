@@ -38,5 +38,5 @@ test = ["pytest>=8.0.0", "pytest-django>=4.8.0", "pytest-asyncio>=0.23.0", "resp
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["apps*", "agos_services*"]
+include = ["agos_services*"]
 namespaces = true

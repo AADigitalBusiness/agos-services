@@ -36,9 +36,9 @@ jobs:
           for name in (
               "agos_services/asgi.py",
               "agos_services/urls.py",
-              "apps/channels/models.py",
-              "apps/channels/migrations/0001_initial.py",
-              "apps/auth/migrations/0001_initial.py",
+              "agos_services/apps/channels/models.py",
+              "agos_services/apps/channels/migrations/0001_initial.py",
+              "agos_services/apps/auth/migrations/0001_initial.py",
           ):
               assert name in names, f"Missing in wheel: {name}"
           PY
