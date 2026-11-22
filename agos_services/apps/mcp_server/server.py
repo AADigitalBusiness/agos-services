@@ -2,6 +2,8 @@ import json
 import logging
 from typing import Optional, Dict, Any, List
 from mcp.server.mcpserver import MCPServer
+from mcp.server.mcpserver.context import Context
+from agos_services.apps.mcp_server.identity import client_from_context
 from agos_services.apps.mcp_server.middleware import PrivilegeGate, PermissionDeniedError, AuthenticationRequiredError
 from django.conf import settings
 
@@ -34,8 +36,8 @@ def create_mcp_server() -> MCPServer:
             name="shopify.products.list",
             description="Query Shopify products catalog with optional search filter and pagination limit.",
         )
-        async def get_products(limit: int = 10, query: Optional[str] = None, client_token: Optional[str] = None) -> str:
-            client = await PrivilegeGate.authenticate_token(client_token)
+        async def get_products(limit: int = 10, query: Optional[str] = None, ctx: Context = None) -> str:
+            client = await client_from_context(ctx)
             result = await handle_get_products(client=client, limit=limit, query=query)
             return json.dumps(result, indent=2)
     
@@ -43,8 +45,8 @@ def create_mcp_server() -> MCPServer:
             name="shopify.products.get",
             description="Retrieve detailed product information, including variants and prices, by Shopify product ID.",
         )
-        async def get_product_by_id(product_id: str, client_token: Optional[str] = None) -> str:
-            client = await PrivilegeGate.authenticate_token(client_token)
+        async def get_product_by_id(product_id: str, ctx: Context = None) -> str:
+            client = await client_from_context(ctx)
             result = await handle_get_product_by_id(client=client, product_id=product_id)
             return json.dumps(result, indent=2)
     
@@ -52,8 +54,8 @@ def create_mcp_server() -> MCPServer:
             name="shopify.inventory.search",
             description="Search inventory levels across locations by SKU or inventory item ID.",
         )
-        async def search_inventory(sku: Optional[str] = None, location_id: Optional[str] = None, limit: int = 20, client_token: Optional[str] = None) -> str:
-            client = await PrivilegeGate.authenticate_token(client_token)
+        async def search_inventory(sku: Optional[str] = None, location_id: Optional[str] = None, limit: int = 20, ctx: Context = None) -> str:
+            client = await client_from_context(ctx)
             result = await handle_search_inventory(client=client, sku=sku, location_id=location_id, limit=limit)
             return json.dumps(result, indent=2)
     
@@ -61,8 +63,8 @@ def create_mcp_server() -> MCPServer:
             name="shopify.orders.list",
             description="List customer orders filtered by status (open, closed, any) and pagination limit.",
         )
-        async def get_orders(limit: int = 10, status: Optional[str] = "open", client_token: Optional[str] = None) -> str:
-            client = await PrivilegeGate.authenticate_token(client_token)
+        async def get_orders(limit: int = 10, status: Optional[str] = "open", ctx: Context = None) -> str:
+            client = await client_from_context(ctx)
             result = await handle_get_orders(client=client, limit=limit, status=status)
             return json.dumps(result, indent=2)
     
@@ -70,8 +72,8 @@ def create_mcp_server() -> MCPServer:
             name="shopify.orders.get",
             description="Retrieve complete order details by Shopify order ID.",
         )
-        async def get_order_by_id(order_id: str, client_token: Optional[str] = None) -> str:
-            client = await PrivilegeGate.authenticate_token(client_token)
+        async def get_order_by_id(order_id: str, ctx: Context = None) -> str:
+            client = await client_from_context(ctx)
             result = await handle_get_order_by_id(client=client, order_id=order_id)
             return json.dumps(result, indent=2)
     
@@ -83,9 +85,9 @@ def create_mcp_server() -> MCPServer:
             line_items: List[Dict[str, Any]],
             customer_id: Optional[str] = None,
             note: Optional[str] = None,
-            client_token: Optional[str] = None,
+            ctx: Context = None,
         ) -> str:
-            client = await PrivilegeGate.authenticate_token(client_token)
+            client = await client_from_context(ctx)
             result = await handle_create_draft_order(
                 client=client,
                 line_items=line_items,
