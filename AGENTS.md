@@ -16,6 +16,7 @@ AGOS is a reusable Django package for governed MCP tools. Follow the documentati
 - Keep cross-app documents in root `docs/`; place app-specific pages in `<app>/docs/`. Every documentation folder has `__init__.py`.
 - Write every Markdown page with a one-line purpose, a Mermaid diagram and a Next section.
 - Keep one source of truth for each fact. Link instead of copying, and never hand-edit generated reference tables.
+- Functional requirements for planned Python modules live exclusively in `docs/requirements/`. State the outcome and observable acceptance criterion, not code structure, algorithms, programming instructions, or implementation examples. Do not label proposed functionality as implemented.
 - Commit names use `type(area): summary`. Only mark a design decision Accepted after owner approval.
 - MCP tool IDs follow `provider.resource.action`. Registration, authorization and persisted grants must agree; never silently grant aliases. Resolve tool identity exclusively from the authenticated transport principal.
 - Publish only explicitly registered callables from installed Django apps. App-level discovery is opt-in with `AGOS_ENABLE_SERVICE_DISCOVERY`; handlers require an injected `ctx: Context` and may not expose `client_token`.
