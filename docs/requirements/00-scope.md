@@ -19,6 +19,10 @@ This collection defines **target requirements**, not an assertion that the plann
 
 Modules have distinct ownership: core describes **what services exist**; security decides **who is permitted**; execution handles **what happens on invocation**; transports expose **how clients communicate**; Django integration provides **application lifecycle and persistence**; provider services supply business capabilities; operations governs **readiness and observability**.
 
+## Approved architecture decisions
+
+The [modular boundaries](../07-decisions/0001-modular-python-boundaries.md), [transport-independent execution](../07-decisions/0002-transport-independent-execution.md), [single-process SSE deployment](../07-decisions/0003-single-process-sse-deployment.md), and [Django 5.2+ compatibility direction](../07-decisions/0004-django-52-compatibility.md) are accepted decisions. They are architectural commitments, not evidence that the planned implementation has been delivered.
+
 ## Acceptance policy
 
 - Every requirement has an identifier and an observable pass/fail outcome.
