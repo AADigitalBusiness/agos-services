@@ -38,6 +38,16 @@ flowchart LR
 
 Passing authentication tests does not establish production readiness. Credential lifecycle, authorization scope, throttling and negative multiuser tests must all be evidenced.
 
+## Python module responsibilities
+
+| Planned module | Functional obligation | Verification |
+|---|---|---|
+| `security/identity.py` | Identify the authenticated active principal for every request (SEC-01, SEC-05). | Missing, forged or deactivated identity is rejected. |
+| `security/permissions.py` | Enforce exact, resource-scoped grants (SEC-02, SEC-09). | Denied and cross-organization operations do not execute. |
+| `security/credentials.py` | Govern issuance, expiry, rotation and revocation (SEC-04, SEC-05). | Rotated or revoked credentials stop working and do not leak. |
+| `security/policies.py` | Apply deny-by-default behavior and organizational restrictions (SEC-03, SEC-08, SEC-09). | Policy failures and tenant mismatches are rejected. |
+| `security/rate_limits.py` | Enforce and report request-volume restrictions (SEC-06). | Excess requests are rejected and observable. |
+
 ## Next
 
 Read [Execution requirements](03-execution.md) and the [release gates](09-validation-matrix.md).
