@@ -36,6 +36,16 @@ flowchart LR
 
 Core does not own credential storage, decide user permissions, maintain transport sessions or implement business operations.
 
+## Python module responsibilities
+
+| Planned module | Functional obligation | Verification |
+|---|---|---|
+| `core/registry.py` | Maintain a unique, inspectable catalog of active services (CORE-02, CORE-03). | Duplicate names fail and each active identifier is discoverable. |
+| `core/discovery.py` | Find only explicitly available services from enabled installations (CORE-01, CORE-04). | Disabled and unpublished services remain unavailable across repeated discovery. |
+| `core/contracts.py` | Establish consistent service identity and capability information for consumers (CORE-03, CORE-06). | Independent providers present comparable, nonambiguous service descriptions. |
+| `core/exceptions.py` | Distinguish invalid catalog entries from unavailable services (CORE-04, CORE-06). | Operators and clients can identify the reason for each rejection. |
+| `core/lifecycle.py` | Make enabling, disabling and withdrawing a service observable (CORE-06, CORE-07). | A withdrawn service cannot be executed or silently substituted. |
+
 ## Next
 
 Read [Security requirements](02-security.md) and the [module scope](00-scope.md).
