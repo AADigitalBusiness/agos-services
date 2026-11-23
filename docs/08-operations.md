@@ -38,6 +38,10 @@ Use a local clone, a Python 3.11/3.12 environment and the host project's configu
 
 5. Review CI on both supported Python versions and the independent-host wheel installation check; do not merge while package tests or security review are failing.
 
+## Accepted deployment and compatibility constraints
+
+The initial deployment target is [one process with local SSE sessions](07-decisions/0003-single-process-sse-deployment.md). The approved compatibility direction is [Django 5.2 or newer](07-decisions/0004-django-52-compatibility.md). Neither decision changes the current runtime or dependency declarations; use the installed release's actual support matrix until the corresponding implementation and validations are complete.
+
 ## MCP transport security status
 
 Both `GET /mcp/sse` and `POST /mcp/messages/` require an authenticated client token. AGOS assigns the verified `MCPClient.pk` to the MCP SDK's `AuthenticatedUser` in the ASGI scope for **both** requests. On SSE creation, the SDK records the principal as the session owner; on POST, its session guard compares the principal before delivering a message. Requests from another authenticated client receive the same 404 as an unknown session.
