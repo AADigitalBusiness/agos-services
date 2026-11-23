@@ -37,6 +37,15 @@ flowchart LR
 
 The existing SSE implementation keeps session state in process. Cross-process continuity must not be claimed without evidence. See [Operations](../08-operations.md) for current deployment constraints.
 
+## Python module responsibilities
+
+| Planned module | Functional obligation | Verification |
+|---|---|---|
+| `transports/base.py` | Preserve the same caller and service meaning across supported channels (TRN-01, TRN-08). | Unsupported or unauthenticated channels do not bypass controls. |
+| `transports/mcp/server.py` | Advertise only available services to MCP clients (TRN-01, TRN-07). | Published capabilities are usable and invalid calls are refused. |
+| `transports/mcp/sessions.py` | Preserve ownership, expiry and isolation of sessions (TRN-02–TRN-06). | Cross-client and expired sessions cannot dispatch work. |
+| `transports/mcp/http.py` | Protect message intake and deliver correct client responses (TRN-02, TRN-05, TRN-07). | Invalid, oversized and unauthenticated requests are rejected. |
+
 ## Next
 
 Read [Django integration requirements](05-django-integration.md) and [Security requirements](02-security.md).
