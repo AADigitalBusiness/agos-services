@@ -29,6 +29,8 @@ To embed AGOS in another Django project, follow [Getting started](docs/02-gettin
 | Task | Single source |
 |---|---|
 | Find documentation | [Documentation map](docs/00-map.md) |
+| Review requirements of each planned Python module | [Module requirements](docs/requirements/00-scope.md) |
+| Validate readiness and acceptance | [Validation matrix](docs/requirements/09-validation-matrix.md) |
 | Install in Django | [Getting started](docs/02-getting-started.md) |
 | Understand system boundaries | [Architecture](docs/03-architecture.md) |
 | Operate and verify | [Operations](docs/08-operations.md) |
