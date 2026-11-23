@@ -39,6 +39,15 @@ flowchart LR
 
 Execution does not own the policy defining who may run a service, nor the provider's underlying business rules.
 
+## Python module responsibilities
+
+| Planned module | Functional obligation | Verification |
+|---|---|---|
+| `execution/executor.py` | Execute only validated and permitted services (EXE-01, EXE-04). | Refused and invalid invocations produce no provider-side effect. |
+| `execution/context.py` | Preserve the trusted caller and request identity throughout invocation (EXE-02, EXE-08). | Outcomes remain attributable and cannot switch organizations. |
+| `execution/results.py` | Distinguish success, validation errors, denial, timeout and provider failure (EXE-03, EXE-05). | Every category has an unambiguous observable outcome. |
+| `execution/audit.py` | Retain safe execution evidence (EXE-02, EXE-07). | An operator can trace an invocation without seeing credentials. |
+
 ## Next
 
 Read [Transport requirements](04-transports.md) and [Security requirements](02-security.md).
