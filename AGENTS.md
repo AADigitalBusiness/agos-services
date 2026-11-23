@@ -9,6 +9,7 @@ AGOS is a reusable Django package for governed MCP tools. Follow the documentati
 - [Operations](docs/08-operations.md) — local checks and packaging.
 - [MCP overview](agos_services/apps/mcp_server/docs/01-overview.md) — canonical service keys.
 - [Accepted decision 0001](agos_services/apps/mcp_server/docs/07-decisions/0001-service-namespaces.md).
+- [Approved modular architecture](docs/07-decisions/0001-modular-python-boundaries.md), [execution](docs/07-decisions/0002-transport-independent-execution.md), [initial deployment](docs/07-decisions/0003-single-process-sse-deployment.md), and [Django target](docs/07-decisions/0004-django-52-compatibility.md).
 
 ## Rules
 
@@ -20,7 +21,8 @@ AGOS is a reusable Django package for governed MCP tools. Follow the documentati
 - Commit names use `type(area): summary`. Only mark a design decision Accepted after owner approval.
 - MCP tool IDs follow `provider.resource.action`. Registration, authorization and persisted grants must agree; never silently grant aliases. Resolve tool identity exclusively from the authenticated transport principal.
 - Publish only explicitly registered callables from installed Django apps. App-level discovery is opt-in with `AGOS_ENABLE_SERVICE_DISCOVERY`; handlers require an injected `ctx: Context` and may not expose `client_token`.
-- Do not add `aad_docs` to runtime dependencies until the Django 5.2 version requirement is reconciled.
+- Do not add `aad_docs` to runtime dependencies until the Django 5.2 version requirement is reconciled. The accepted target is Django 5.2+; do not modify dependencies or claim migration completion from an ADR alone.
+- Maintain the approved independent execution engine and single-process initial SSE hosting as target requirements. Documentation changes must not imply these have already been implemented.
 
 ## Checks
 
