@@ -22,6 +22,10 @@ The `server.py` registration name and `tools.py` authorization name must be iden
 
 These names replace the pre-namespace MCP identifiers. Grant migration is performed by the channels app. A naming key does not imply that other providers are installed: `github.issues.create` remains an example only.
 
+## Architecture boundaries
+
+The MCP server is the **current** entry point for service invocation. The [approved architecture](../../../../docs/07-decisions/0001-modular-python-boundaries.md) and [independent execution decision](../../../../docs/07-decisions/0002-transport-independent-execution.md) establish a future separation between this transport and common execution. The initial hosting policy is [one process with local SSE sessions](../../../../docs/07-decisions/0003-single-process-sse-deployment.md).
+
 ## Application services
 
 Hosts may enable explicit app-local discovery with `AGOS_ENABLE_SERVICE_DISCOVERY=True`. Only installed Django applications with a `services.register_services(registry)` entrypoint are considered; registration never creates permissions. See [register a service](05-guides/register-a-service.md).
