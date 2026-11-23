@@ -7,6 +7,7 @@ flowchart LR
   R["README.md"] --> S["02-getting-started.md"]
   R --> A["03-architecture.md"]
   R --> O["08-operations.md"]
+  A --> Q["requirements/ · Functional acceptance"]
   A --> C["channels/docs"]
   A --> M["mcp_server/docs"]
   A --> P["shopify_api/docs"]
@@ -15,6 +16,9 @@ flowchart LR
 
 | Question | Source |
 |---|---|
+| Which functional modules are planned and what must they prove? | [Module requirements](requirements/00-scope.md) |
+| What evidence is required for accepting a module? | [Validation matrix](requirements/09-validation-matrix.md) |
+| How are identity, execution and transport requirements separated? | [Security](requirements/02-security.md), [Execution](requirements/03-execution.md), [Transports](requirements/04-transports.md) |
 | How do I install AGOS into Django? | [Getting started](02-getting-started.md) |
 | How does the MCP privilege boundary work? | [Architecture](03-architecture.md) |
 | How do I run and verify the service? | [Operations](08-operations.md) |
