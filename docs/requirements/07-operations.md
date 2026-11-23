@@ -38,6 +38,14 @@ flowchart LR
 
 The actual commands and day-to-day operational procedure have one authoritative home in [Operations](../08-operations.md). This page owns only **required outcomes and their acceptance criteria**.
 
+## Python module responsibilities
+
+| Planned module | Functional obligation | Verification |
+|---|---|---|
+| `management/commands/` | Provide operator-visible inventory and diagnostics (OPS-01, OPS-04). | An authorized operator can identify service and access status. |
+| `checks.py` | Identify unsafe, unsupported or incomplete configuration (OPS-02, OPS-07). | Known invalid configurations do not appear healthy. |
+| Release and distribution boundary | Communicate compatibility and readiness evidence (OPS-02, OPS-03, OPS-08). | Release reviewers can distinguish completed acceptance from untested features. |
+
 ## Next
 
 Read [Governance requirements](08-governance.md) and [Validation matrix](09-validation-matrix.md).
