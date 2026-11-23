@@ -9,6 +9,10 @@ flowchart LR
   Release --> Recover["Recover if needed"]
 ```
 
+## Approved initial operating constraints
+
+[Decision 0003](../07-decisions/0003-single-process-sse-deployment.md) defines one process with local SSE sessions for the initial deployment. [Decision 0004](../07-decisions/0004-django-52-compatibility.md) defines the future Django compatibility baseline. These are release acceptance conditions, not currently completed deployments or dependency changes.
+
 ## Functional requirements
 
 | ID | Requirement |
@@ -21,6 +25,7 @@ flowchart LR
 | OPS-06 | Service recovery and rollback expectations shall be explicit; recovery shall not silently restore revoked permissions. |
 | OPS-07 | A deployed topology shall state whether transport sessions are supported with one process, many workers or multiple replicas. |
 | OPS-08 | Release readiness shall distinguish CI success from demonstrated security and operational acceptance. |
+| OPS-09 | The initial deployment shall explicitly declare one SSE process, in-memory session lifetime, interruption behavior and capacity limitations. |
 
 ## Validation and acceptance
 
@@ -33,6 +38,7 @@ flowchart LR
 | OPS-06 | A recovery rehearsal preserves intended authorization and documents the outcome. |
 | OPS-07 | A session survives the advertised deployment topology or that topology is expressly unsupported. |
 | OPS-08 | Release approval is withheld when a required security or recovery gate lacks evidence, even if CI passes. |
+| OPS-09 | A deployment review verifies one SSE process and that a restart invalidates old sessions without changing their ownership. |
 
 ## Current scope
 
