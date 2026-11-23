@@ -10,6 +10,10 @@ flowchart LR
   S --> P["Provision client + grants"]
 ```
 
+## Compatibility decision
+
+The [accepted Django baseline decision](07-decisions/0004-django-52-compatibility.md) targets Django 5.2+ for a **future** compatibility release. The following steps describe the current released source's dependency requirements, not an already delivered 5.2 migration. Do not treat the architecture decision as permission to ignore the package's declared constraints.
+
 ## Before you start
 
 Use Python 3.11 or newer and a compatible Django 5.0–5.1 project. The runtime currently specifies `django>=5.0,<5.2`; **AAD-docs itself requires Django 5.2+**, so following its file layout does not mean installing `aad_docs` in this release.

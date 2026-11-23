@@ -9,6 +9,10 @@ flowchart LR
   Apps --> Docs["Application documentation"]
 ```
 
+## Approved compatibility direction
+
+[Decision 0004](../07-decisions/0004-django-52-compatibility.md) approves Django **5.2 or newer** as the future supported baseline, with a verified upper bound. AAD-docs compatibility is a required acceptance outcome. The present distribution still declares its existing dependency range until a separate implementation and compatibility validation is completed.
+
 ## Functional requirements
 
 | ID | Requirement |
@@ -20,6 +24,7 @@ flowchart LR
 | DJG-05 | Administrative views shall make grant state and client activation understandable while protecting sensitive credential material. |
 | DJG-06 | The supported Django and Python versions shall be declared and verified, including documentation compatibility. |
 | DJG-07 | Application documentation shall be discoverable under the AAD-docs conventions without duplicating generated model or route metadata. |
+| DJG-08 | The future compatibility release shall support Django 5.2 or newer within an explicitly tested version range and shall identify the unsupported legacy baseline. |
 
 ## Validation and acceptance
 
@@ -31,6 +36,7 @@ flowchart LR
 | DJG-05 | An operator can inspect status and grants without obtaining reusable stored credentials. |
 | DJG-06 | Supported combinations pass the declared compatibility checks; unsupported combinations are stated. |
 | DJG-07 | AAD-docs can navigate the package documentation in a compatible host, with no duplicate authoritative descriptions of models. |
+| DJG-08 | A clean Django 5.2 host passes installation, migrations, service invocation and AAD-docs navigation; every additional advertised Django version is tested and an older unsupported host is clearly identified. |
 
 ## Existing applications
 

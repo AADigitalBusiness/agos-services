@@ -8,6 +8,7 @@ flowchart LR
   R --> A["03-architecture.md"]
   R --> O["08-operations.md"]
   A --> Q["requirements/ · Functional acceptance"]
+  A --> D["07-decisions/ · Approved architecture"]
   A --> C["channels/docs"]
   A --> M["mcp_server/docs"]
   A --> P["shopify_api/docs"]
@@ -16,6 +17,7 @@ flowchart LR
 
 | Question | Source |
 |---|---|
+| Which architecture decisions have been approved? | [Modular boundaries](07-decisions/0001-modular-python-boundaries.md), [independent execution](07-decisions/0002-transport-independent-execution.md), [initial deployment](07-decisions/0003-single-process-sse-deployment.md), [Django baseline](07-decisions/0004-django-52-compatibility.md) |
 | Which functional modules are planned and what must they prove? | [Module requirements](requirements/00-scope.md) |
 | What evidence is required for accepting a module? | [Validation matrix](requirements/09-validation-matrix.md) |
 | How are identity, execution and transport requirements separated? | [Security](requirements/02-security.md), [Execution](requirements/03-execution.md), [Transports](requirements/04-transports.md) |

@@ -9,6 +9,10 @@ flowchart LR
   Session --> Gateway["Governed execution"]
 ```
 
+## Approved boundary
+
+Per [decision 0002](../07-decisions/0002-transport-independent-execution.md), transports are client communication interfaces, not separate execution engines. [Decision 0003](../07-decisions/0003-single-process-sse-deployment.md) limits the **initial supported SSE deployment** to one process with in-memory sessions. Multiworker and cross-replica session support are not required for this initial scope.
+
 ## Functional requirements
 
 | ID | Requirement |
@@ -21,6 +25,7 @@ flowchart LR
 | TRN-06 | Any supported multi-process or multi-instance deployment shall preserve session correctness, or explicitly constrain deployment to a topology that does. |
 | TRN-07 | Invalid, oversized or unauthenticated messages shall be refused before business execution. |
 | TRN-08 | Unsupported transports or tool calls without a verified identity shall fail closed rather than bypass authentication. |
+| TRN-09 | The initial supported SSE service shall operate in one process with local sessions, and restarting that process shall not cause session IDs to be reassigned to other clients. |
 
 ## Validation and acceptance
 
@@ -32,10 +37,11 @@ flowchart LR
 | TRN-05 | Two simultaneous clients cannot receive or affect each other's traffic. |
 | TRN-06 | The documented deployment topology passes session continuity tests; unsupported topologies are clearly reported as unsupported. |
 | TRN-07, TRN-08 | Malformed, unauthorized and unsupported requests are denied with no service-side effect. |
+| TRN-09 | A single-process, multiple-client acceptance test confirms session isolation and predictable session invalidation after process restart. |
 
 ## Current boundary
 
-The existing SSE implementation keeps session state in process. Cross-process continuity must not be claimed without evidence. See [Operations](../08-operations.md) for current deployment constraints.
+The existing SSE implementation keeps session state in process. The [accepted initial deployment topology](../07-decisions/0003-single-process-sse-deployment.md) is a single process; cross-process continuity is outside the first release scope and must not be claimed as supported. See [Operations](../08-operations.md) for current deployment constraints.
 
 ## Python module responsibilities
 

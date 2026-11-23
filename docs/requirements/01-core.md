@@ -9,6 +9,10 @@ flowchart LR
   Catalog --> Execute["Authorized execution"]
 ```
 
+## Approved boundary
+
+The [modular architecture decision](../07-decisions/0001-modular-python-boundaries.md) assigns service catalog, discovery, identifiers and contracts to Core. Core must be usable without requiring MCP or a particular provider. This is an accepted target, not a claim that the current package has already been reorganized.
+
 ## Functional requirements
 
 | ID | Requirement |

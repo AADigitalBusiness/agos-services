@@ -35,7 +35,7 @@ To embed AGOS in another Django project, follow [Getting started](docs/02-gettin
 | Understand system boundaries | [Architecture](docs/03-architecture.md) |
 | Operate and verify | [Operations](docs/08-operations.md) |
 | Understand namespaced tool IDs | [MCP overview](agos_services/apps/mcp_server/docs/01-overview.md) |
-| Review accepted design | [Decision 0001](agos_services/apps/mcp_server/docs/07-decisions/0001-service-namespaces.md) |
+| Review accepted design | [Service namespaces](agos_services/apps/mcp_server/docs/07-decisions/0001-service-namespaces.md) and [approved modular architecture](docs/07-decisions/0001-modular-python-boundaries.md) |
 
 This repository follows the [AAD-docs documentation standard](https://github.com/AADigitalBusiness/AAD-docs/blob/main/docs/HOW-DOCS-WORK.md): cross-app information at `docs/`, app-owned documentation in `<app>/docs/`, Mermaid diagrams, and one owner per fact. The AAD-docs renderer itself is not installed here because this project currently pins Django below 5.2.
 

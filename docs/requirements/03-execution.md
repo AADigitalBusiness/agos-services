@@ -10,6 +10,10 @@ flowchart LR
   Run --> Evidence["Audit evidence"]
 ```
 
+## Approved boundary
+
+The [execution architecture decision](../07-decisions/0002-transport-independent-execution.md) makes service execution independent of MCP. Every supported transport must produce the same authorization and execution semantics. This is an approved target, not an implemented standalone execution engine.
+
 ## Functional requirements
 
 | ID | Requirement |
@@ -22,6 +26,7 @@ flowchart LR
 | EXE-06 | An operation with external side effects shall make duplicate-submission behavior explicit to consumers and operators. |
 | EXE-07 | Execution records shall not leak credentials or unrelated client data. |
 | EXE-08 | Provider failures shall not authorize fallback execution against a different provider or tenant. |
+| EXE-09 | Invocations of the same service through different supported transports shall follow equivalent authorization, input validation, result and audit rules. |
 
 ## Validation and acceptance
 
@@ -34,6 +39,7 @@ flowchart LR
 | EXE-05 | An interrupted or timed-out invocation is not falsely recorded as successful. |
 | EXE-06 | A repeated write request follows a documented, testable duplicate-handling rule. |
 | EXE-08 | Failure of one provider cannot trigger a call to a different provider or organization. |
+| EXE-09 | A permitted and a denied request produce equivalent policy decisions and outcome categories across two supported transports, when a second transport is offered. |
 
 ## Exclusions
 

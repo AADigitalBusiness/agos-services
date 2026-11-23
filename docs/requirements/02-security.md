@@ -9,6 +9,10 @@ flowchart LR
   Grants -->|Deny| Refuse["Refusal and audit"]
 ```
 
+## Approved boundary
+
+Under the [modular architecture decision](../07-decisions/0001-modular-python-boundaries.md), Security owns identity, authorization, credentials and access policy across **all** transports. Under the [independent execution decision](../07-decisions/0002-transport-independent-execution.md), authorization must retain the same meaning for any supported channel.
+
 ## Functional requirements
 
 | ID | Requirement |
