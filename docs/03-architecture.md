@@ -12,6 +12,10 @@ flowchart TD
     A["Django Admin"] --> P
 ```
 
+## Approved target architecture
+
+The target separates [core, security, execution and transports](07-decisions/0001-modular-python-boundaries.md), with [execution independent of MCP](07-decisions/0002-transport-independent-execution.md). These decisions describe planned boundaries; the diagram above depicts current implementation relationships.
+
 ## Boundaries
 
 - `agos_services.asgi.mount_mcp` mounts SSE and JSON-RPC message routes ahead of Django.
