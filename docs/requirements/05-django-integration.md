@@ -36,6 +36,17 @@ flowchart LR
 
 The current `channels`, `mcp_server`, `shopify_api` and `auth` Django apps remain existing product boundaries. This specification covers the **shared integration requirement**; individual current behavior remains documented in their respective app overviews.
 
+## Python module responsibilities
+
+| Existing or planned module | Functional obligation | Verification |
+|---|---|---|
+| `apps/channels/` | Make client and grant states available to authorized operators (DJG-02, DJG-05). | Migration preserves allow/deny outcomes and excludes secret disclosure. |
+| `apps/mcp_server/` | Expose the configured MCP service in the Django host (DJG-03, DJG-04). | Disabled services remain unavailable and ungranted calls are refused. |
+| `apps/shopify_api/` | Support the installed Shopify business capabilities without governing other providers (DJG-03). | Shopify operations do not modify unrelated provider settings or grants. |
+| `apps/auth/` | Respect authentication boundaries of provider connections (DJG-03, DJG-05). | Unauthorized provider access is refused without exposing credentials. |
+| `checks.py` | Report incompatible or unsafe host conditions (DJG-06). | An unsupported configuration produces an actionable diagnostic. |
+| `conf.py` | Make supported host options and enabled capabilities distinguishable (DJG-03, DJG-06). | The host can determine its enabled and disabled capabilities. |
+
 ## Next
 
 Read [Provider service requirements](06-provider-services.md) and [Validation matrix](09-validation-matrix.md).
