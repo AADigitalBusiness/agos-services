@@ -1,5 +1,8 @@
 """Explicit example service entrypoint for discovery tests."""
-async def ping(*, client_token=None):
+from mcp.server.mcpserver.context import Context
+
+
+async def ping(*, ctx: Context = None):
     return "pong"
 
 
